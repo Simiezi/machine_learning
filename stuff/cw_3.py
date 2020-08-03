@@ -29,7 +29,7 @@ def return_phi(X, n):
 
 
 def loss(X, t, w, lamb, n):
-    return 1 / 2 * np.sum((t - w @ return_phi(X, n).T)**2)
+    return 1 / 2 * np.sum((t - w @ return_phi(X, n).T)**2) + (lamb/2) * np.sum(w**2)
 
 
 def gradient(X, t, w, lamb, n):
@@ -43,10 +43,10 @@ def gradient_descent(X, t, n, step, lamb):
     while cant_stop:
         w_old = w_next
         w_next = w_old - step * gradient(X, t, w_old, lamb, n)
-        "TO DO"
-        loss_vals.append(loss)
+        loss_vals.append(loss(X, t, w_next, lamb, n))
         if np.linalg.norm(w_next - w_old) <= eps * np.linalg.norm(w_next) * eps0:
             cant_stop = False
+            print(loss_vals[-1])
     return loss_vals, w_next
 
 
